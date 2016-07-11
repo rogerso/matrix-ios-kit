@@ -363,6 +363,23 @@ extern NSString *const kMXKRoomDataSourceSyncStatusChanged;
 
 /**
  Send an image to the room.
+
+ While sending, a fake event will be echoed in the messages list.
+ Once complete, this local echo will be replaced by the event saved by the homeserver.
+
+ @param image the UIImage containing the image to send.
+ @param body A textual representation of the image.
+ @param success A block object called when the operation succeeds. It returns
+ the event id of the event generated on the home server
+ @param failure A block object called when the operation fails.
+ */
+- (void)sendImage:(UIImage*)image
+             body:(NSString *)body
+          success:(void (^)(NSString *eventId))success
+          failure:(void (^)(NSError *error))failure;
+
+/**
+ Send an image to the room.
  
  While sending, a fake event will be echoed in the messages list.
  Once complete, this local echo will be replaced by the event saved by the homeserver.
@@ -374,6 +391,21 @@ extern NSString *const kMXKRoomDataSourceSyncStatusChanged;
  @param failure A block object called when the operation fails.
  */
 - (void)sendImage:(NSURL *)imageLocalURL mimeType:(NSString*)mimetype success:(void (^)(NSString *))success failure:(void (^)(NSError *))failure;
+
+/**
+ Send an image to the room.
+
+ While sending, a fake event will be echoed in the messages list.
+ Once complete, this local echo will be replaced by the event saved by the homeserver.
+
+ @param imageLocalURL the local filesystem path of the image to send.
+ @param mimeType the mime type of the image
+ @param body A textual representation of the image.
+ @param success A block object called when the operation succeeds. It returns
+ the event id of the event generated on the home server
+ @param failure A block object called when the operation fails.
+ */
+- (void)sendImage:(NSURL *)imageLocalURL mimeType:(NSString*)mimetype body:(NSString *)body success:(void (^)(NSString *))success failure:(void (^)(NSError *))failure;
 
 /**
  Send an video to the room.
@@ -393,6 +425,25 @@ extern NSString *const kMXKRoomDataSourceSyncStatusChanged;
           failure:(void (^)(NSError *error))failure;
 
 /**
+ Send an video to the room.
+
+ While sending, a fake event will be echoed in the messages list.
+ Once complete, this local echo will be replaced by the event saved by the homeserver.
+
+ @param videoLocalURL the local filesystem path of the video to send.
+ @param videoThumbnail the UIImage hosting a video thumbnail.
+ @param body A textual representation of the image.
+ @param success A block object called when the operation succeeds. It returns
+ the event id of the event generated on the home server
+ @param failure A block object called when the operation fails.
+ */
+- (void)sendVideo:(NSURL*)videoLocalURL
+    withThumbnail:(UIImage*)videoThumbnail
+             body:(NSString *)body
+          success:(void (^)(NSString *eventId))success
+          failure:(void (^)(NSError *error))failure;
+
+/**
  Send a file to the room.
  
  While sending, a fake event will be echoed in the messages list.
@@ -408,6 +459,25 @@ extern NSString *const kMXKRoomDataSourceSyncStatusChanged;
         mimeType:(NSString*)mimeType
           success:(void (^)(NSString *eventId))success
           failure:(void (^)(NSError *error))failure;
+
+/**
+ Send a file to the room.
+
+ While sending, a fake event will be echoed in the messages list.
+ Once complete, this local echo will be replaced by the event saved by the homeserver.
+
+ @param fileLocalURL the local filesystem path of the file to send.
+ @param mimeType the mime type of the file.
+ @param body A textual representation of the image.
+ @param success A block object called when the operation succeeds. It returns
+ the event id of the event generated on the home server
+ @param failure A block object called when the operation fails.
+ */
+- (void)sendFile:(NSURL*)fileLocalURL
+        mimeType:(NSString*)mimeType
+            body:(NSString *)body
+         success:(void (^)(NSString *eventId))success
+         failure:(void (^)(NSError *error))failure;
 
 /**
  Send a room message to a room.

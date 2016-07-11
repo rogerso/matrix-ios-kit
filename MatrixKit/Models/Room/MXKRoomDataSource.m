@@ -1197,6 +1197,11 @@ NSString *const kMXKRoomDataSourceSyncStatusChanged = @"kMXKRoomDataSourceSyncSt
 
 - (void)sendImage:(UIImage *)image success:(void (^)(NSString *))success failure:(void (^)(NSError *))failure
 {
+    [self sendImage:image body:nil success:success failure:failure];
+}
+
+- (void)sendImage:(UIImage *)image body:(NSString *)body success:(void (^)(NSString *))success failure:(void (^)(NSError *))failure
+{
     // Make sure the uploaded image orientation is up
     image = [MXKTools forceImageOrientationUp:image];
     
@@ -1226,7 +1231,7 @@ NSString *const kMXKRoomDataSourceSyncStatusChanged = @"kMXKRoomDataSourceSyncSt
     // Prepare the message content for building an echo message
     NSDictionary *msgContent = @{
                                  @"msgtype": kMXMessageTypeImage,
-                                 @"body": filename,
+                                 @"body": body ? : filename,
                                  @"url": fakeMediaManagerURL,
                                  @"info": @{
                                          @"mimetype": mimetype,
@@ -1299,6 +1304,11 @@ NSString *const kMXKRoomDataSourceSyncStatusChanged = @"kMXKRoomDataSourceSyncSt
 
 - (void)sendImage:(NSURL *)imageLocalURL mimeType:(NSString*)mimetype success:(void (^)(NSString *))success failure:(void (^)(NSError *))failure
 {
+    [self sendImage:imageLocalURL mimeType:mimetype body:nil success:success failure:failure];
+}
+
+- (void)sendImage:(NSURL *)imageLocalURL mimeType:(NSString*)mimetype body:(NSString *)body success:(void (^)(NSString *))success failure:(void (^)(NSError *))failure
+{
     NSData *imageData = [NSData dataWithContentsOfFile:imageLocalURL.path];
     UIImage *image = [UIImage imageWithData:imageData];
     
@@ -1325,7 +1335,7 @@ NSString *const kMXKRoomDataSourceSyncStatusChanged = @"kMXKRoomDataSourceSyncSt
     // Prepare the message content for building an echo message
     NSDictionary *msgContent = @{
                                  @"msgtype": kMXMessageTypeImage,
-                                 @"body": filename,
+                                 @"body": body ? : filename,
                                  @"url": fakeMediaManagerURL,
                                  @"info": @{
                                          @"mimetype": mimetype,
@@ -1398,6 +1408,11 @@ NSString *const kMXKRoomDataSourceSyncStatusChanged = @"kMXKRoomDataSourceSyncSt
 
 - (void)sendVideo:(NSURL *)videoLocalURL withThumbnail:(UIImage *)videoThumbnail success:(void (^)(NSString *))success failure:(void (^)(NSError *))failure
 {
+    [self sendVideo:videoLocalURL withThumbnail:videoThumbnail body:nil success:success failure:failure];
+}
+
+- (void)sendVideo:(NSURL *)videoLocalURL withThumbnail:(UIImage *)videoThumbnail body:(NSString *)body success:(void (^)(NSString *))success failure:(void (^)(NSError *))failure
+{
     NSData *videoThumbnailData = UIImageJPEGRepresentation(videoThumbnail, 0.8);
     
     // Use the uploader id as fake URL for this image data
@@ -1413,7 +1428,7 @@ NSString *const kMXKRoomDataSourceSyncStatusChanged = @"kMXKRoomDataSourceSyncSt
     // Prepare the message content for building an echo message
     NSMutableDictionary *msgContent = [@{
                                          @"msgtype": kMXMessageTypeVideo,
-                                         @"body": @"Video",
+                                         @"body": body ? : @"Video",
                                          @"url": fakeMediaManagerThumbnailURL,
                                          @"info": [@{
                                                      @"thumbnail_url": fakeMediaManagerThumbnailURL,
@@ -1558,6 +1573,11 @@ NSString *const kMXKRoomDataSourceSyncStatusChanged = @"kMXKRoomDataSourceSyncSt
 
 - (void)sendFile:(NSURL *)fileLocalURL mimeType:(NSString*)mimetype success:(void (^)(NSString *))success failure:(void (^)(NSError *))failure
 {
+    [self sendFile:fileLocalURL mimeType:mimetype body:nil success:success failure:failure];
+}
+
+- (void)sendFile:(NSURL *)fileLocalURL mimeType:(NSString*)mimetype body:(NSString *)body success:(void (^)(NSString *))success failure:(void (^)(NSError *))failure
+{
     NSData *fileData = [NSData dataWithContentsOfFile:fileLocalURL.path];
     
     // Use the uploader id as fake URL for this file data
@@ -1583,7 +1603,7 @@ NSString *const kMXKRoomDataSourceSyncStatusChanged = @"kMXKRoomDataSourceSyncSt
     // Prepare the message content for building an echo message
     NSDictionary *msgContent = @{
                                  @"msgtype": kMXMessageTypeFile,
-                                 @"body": filename,
+                                 @"body": body ? : filename,
                                  @"url": fakeMediaManagerURL,
                                  @"info": @{
                                          @"mimetype": mimetype,
